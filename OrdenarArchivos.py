@@ -48,10 +48,10 @@ def find_files(directory : Path):
             contador_archivos += 1
             if item.suffix in DOCUMENTOS:
                 contador_documentos += 1
-                item.move()
+                item.move_into(directory / "Documentos")
             if item.suffix in IMAGENES:
                 contador_imagenes += 1
-                imagenes.append(item)
+                item.move_into(directory / "Imagenes")
         if item.is_dir():
             contador_directorios += 1
     print(f"Numero de archivos: {contador_archivos}")
