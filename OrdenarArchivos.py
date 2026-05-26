@@ -3,15 +3,13 @@ from pathlib import Path
 opcion_seleccionada = 1
 p = Path.home()
 
-print(p)
-
 IMAGENES=(
     ".jpeg",".png",".jpg",
     ".webp",".gif",".tiff"
 )
 DOCUMENTOS=(
     ".pdf",".tex",".pptx",
-    ".txt",".csv","docx"
+    ".txt",".csv",".docx"
 )
 
 CARPETAS={
@@ -28,14 +26,12 @@ def create_directories(directory : Path):
     name_img = "Imagenes"
     if not (directory / name_doc).exists():
         print("Creando directorio Documentos...")
-        new_path = directory / name_doc
-        new_path.mkdir() 
+        (directory / name_doc).mkdir() 
     else:
         print(f"El directorio {name_doc} ya existe")
     if not (directory / name_img).exists():
         print("Creando directorio Imagenes...")
-        new_path = directory / name_img
-        new_path.mkdir()
+        (directory / name_img).mkdir()
     else:
         print(f"El directorio {name_img} ya existe")
 
@@ -52,7 +48,7 @@ def find_files(directory : Path):
             contador_archivos += 1
             if item.suffix in DOCUMENTOS:
                 contador_documentos += 1
-                documentos.append(item)
+                item.move()
             if item.suffix in IMAGENES:
                 contador_imagenes += 1
                 imagenes.append(item)
@@ -69,9 +65,14 @@ while opcion_seleccionada != 6:
     for numero,carpeta in CARPETAS.items():
         print(numero, "=", carpeta)
     
-    opcion_seleccionada = int(input(f"{CARPETAS[opcion_seleccionada]}>] Opcion: "))
-    
-    ruta_seleccionada = p / CARPETAS[opcion_seleccionada]
+    try:
+        opcion_seleccionada = int(input(f"{CARPETAS[opcion_seleccionada]}>] Opcion: "))
+        if opcion_seleccionada == 6: break
+        ruta_seleccionada = p / CARPETAS[opcion_seleccionada]
 
-    # find_files(ruta_seleccionada)
-    create_directories(ruta_seleccionada)
+        find_files(ruta_seleccionada)
+        create_directories(ruta_seleccionada)
+    except (ValueError, KeyError):
+        print("Ingrese un numero valido, del 1 al 6")
+        opcion_seleccionada = 1
+        
