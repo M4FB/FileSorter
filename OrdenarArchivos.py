@@ -26,14 +26,18 @@ CARPETAS={
 def create_directories(directory : Path):
     name_doc = "Documentos"
     name_img = "Imagenes"
-    if (directory / name_doc).exists():
-        print("El directorio ya existe", directory / name_doc)
+    if not (directory / name_doc).exists():
+        print("Creando directorio Documentos...")
+        new_path = directory / name_doc
+        new_path.mkdir() 
     else:
-        print("Crear directorio")
-    if (directory / name_img).exists():
-        print("El directorio ya existe",directory / name_img)
+        print(f"El directorio {name_doc} ya existe")
+    if not (directory / name_img).exists():
+        print("Creando directorio Imagenes...")
+        new_path = directory / name_img
+        new_path.mkdir()
     else:
-        print("Crear Imagenes")
+        print(f"El directorio {name_img} ya existe")
 
 
 def find_files(directory : Path):
