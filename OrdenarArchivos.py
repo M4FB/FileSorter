@@ -11,6 +11,22 @@ DOCUMENTOS=(
     ".pdf",".tex",".pptx",
     ".txt",".csv",".docx"
 )
+VIDEOS = (
+    ".mp4",".mov",".mkv",".webm",
+    ".avi",".wmv"
+)
+COMPRIMIDOS = (
+    ".rar",".tar.gz",".tar",".zip",".7zip",
+    ".tar.xz"
+)
+
+
+FILE_TYPE = {
+    "Imagenes" : IMAGENES,
+    "Documentos" : DOCUMENTOS,
+    "Videos" : VIDEOS,
+    "Comprimidos" : COMPRIMIDOS,
+}
 
 CARPETAS={
     1 : "Downloads",
@@ -22,43 +38,32 @@ CARPETAS={
 }
 
 def create_directories(directory : Path):
-    name_doc = "Documentos"
-    name_img = "Imagenes"
-    if not (directory / name_doc).exists():
-        print("Creando directorio Documentos...")
-        (directory / name_doc).mkdir() 
-    else:
-        print(f"El directorio {name_doc} ya existe")
-    if not (directory / name_img).exists():
-        print("Creando directorio Imagenes...")
-        (directory / name_img).mkdir()
-    else:
-        print(f"El directorio {name_img} ya existe")
+    for carpeta,extensiones in FILE_TYPE.items():
+        if not (directory / carpeta).exists():
+            print(f"Creando directorio {carpeta}...")
+            (directory / carpeta).mkdir() 
+        else:
+            print(f"El directorio {carpeta} ya existe.")
 
 
-def find_files(directory : Path):
+def move_files(directory : Path):
+    print("Moviendo archivos...")
     contador_directorios = 0
     contador_archivos = 0
-    contador_imagenes = 0
-    contador_documentos = 0
-    imagenes = []
-    documentos = []
+    dict_contador_filetype = {}
     for item in directory.iterdir():
         if item.is_file():
             contador_archivos += 1
-            if item.suffix in DOCUMENTOS:
-                contador_documentos += 1
-                item.move_into(directory / "Documentos")
-            if item.suffix in IMAGENES:
-                contador_imagenes += 1
-                item.move_into(directory / "Imagenes")
+            for carpeta,extension in FILE_TYPE.items():
+                if item.suffix in extension:
+                    dict_contador_filetype[carpeta] += 1
+                    item.move_into(directory / carpeta)
+                    break
         if item.is_dir():
             contador_directorios += 1
+    print(dict_contador_filetype)
     print(f"Numero de archivos: {contador_archivos}")
     print(f"Numero de directorios: {contador_directorios}")
-    print(f"Numero de documentos: {contador_documentos}\n Listado de documentos: \n {documentos}")
-    print(f"Numero de imagenes: {contador_imagenes}\n Listado de imagenes: \n {imagenes}")
-
 
 while opcion_seleccionada != 6:
     print("Seleccione una opción:")
@@ -66,12 +71,12 @@ while opcion_seleccionada != 6:
         print(numero, "=", carpeta)
     
     try:
-        opcion_seleccionada = int(input(f"{CARPETAS[opcion_seleccionada]}>] Opcion: "))
+        opcion_seleccionada = int(input(f"[{str(p / CARPETAS[opcion_seleccionada])}]> Opcion: "   ))
         if opcion_seleccionada == 6: break
         ruta_seleccionada = p / CARPETAS[opcion_seleccionada]
 
-        find_files(ruta_seleccionada)
         create_directories(ruta_seleccionada)
+        move_files(ruta_seleccionada)
     except (ValueError, KeyError):
         print("Ingrese un numero valido, del 1 al 6")
         opcion_seleccionada = 1
