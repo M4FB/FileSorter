@@ -16,8 +16,9 @@ VIDEOS = (
     ".avi",".wmv"
 )
 COMPRIMIDOS = (
-    ".rar",".tar.gz",".tar",".zip",".7zip",
-    ".tar.xz"
+    # .tar.gz es un edge case
+    ".rar",".gz",".tar",".zip",".7z",
+    ".xz"
 )
 
 
@@ -38,7 +39,7 @@ CARPETAS={
 }
 
 def create_directories(directory : Path):
-    for carpeta,extensiones in FILE_TYPE.items():
+    for carpeta in FILE_TYPE:
         if not (directory / carpeta).exists():
             print(f"Creando directorio {carpeta}...")
             (directory / carpeta).mkdir() 
@@ -50,7 +51,7 @@ def move_files(directory : Path):
     print("Moviendo archivos...")
     contador_directorios = 0
     contador_archivos = 0
-    dict_contador_filetype = {}
+    dict_contador_filetype = {carpeta: 0 for carpeta in FILE_TYPE}
     for item in directory.iterdir():
         if item.is_file():
             contador_archivos += 1
