@@ -9,7 +9,8 @@ IMAGENES=(
 )
 DOCUMENTOS=(
     ".pdf",".tex",".pptx",
-    ".txt",".csv",".docx"
+    ".txt",".csv",".docx",
+    ".csv",".xls",".epub"
 )
 VIDEOS = (
     ".mp4",".mov",".mkv",".webm",
@@ -18,15 +19,20 @@ VIDEOS = (
 COMPRIMIDOS = (
     # .tar.gz es un edge case
     ".rar",".gz",".tar",".zip",".7z",
-    ".xz"
+    ".xz",".AppImage",".deb"
 )
 
+SISTEMAS = (
+    ".py",".bpmn",".sh",".html",".json",
+    ".side"
+)
 
 FILE_TYPE = {
     "Imagenes" : IMAGENES,
     "Documentos" : DOCUMENTOS,
     "Videos" : VIDEOS,
     "Comprimidos" : COMPRIMIDOS,
+    "Sistemas" : SISTEMAS,
 }
 
 CARPETAS={
